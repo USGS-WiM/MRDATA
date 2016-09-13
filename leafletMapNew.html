@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" type="text/css" href="assets/styles.min.css" />
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
+    <link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" />
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.3/themes/base/jquery-ui.css" type="text/css"/>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet">
+    <script src="assets/jquery/jquery.min.js"></script>
+    <script src="assets/jquery/jquery-ui.min.js"></script>
+    <script src="assets/jquery/jquery.ui.touch-punch.min.js"></script>
+    <script src="assets/leaflet-providers.js"></script>
+    <script src="assets/leaflet/l.control.geosearch.js"></script>
+    <script src="assets/leaflet/l.geosearch.provider.esri.js"></script>
+
+
+</head>
+<body>
+<div id="map"></div>
+
+<div class="not-map">
+    <div class="leaflet-top leaflet-right">
+        <div id="layerToggle" onclick="toggleClicked();" style="cursor: pointer;" class="leaflet-control-layers leaflet-control">
+            <a class="leaflet-control-layers-toggle" title="Layers"><img src="assets/layers-2.png"></a>
+        </div>
+    </div>
+
+    <div id="unit_info_right" class="unit_info">
+        <div class="header">
+            <div class="layers-title">Map Layers</div>
+            <div class="layers-close"><img src="assets/close.png"></div>
+        </div>
+
+        <div class="menu-content">
+            <div class="menu-layers">
+
+                <div class="layers-item">
+                    <input type="checkbox" id="markers" name="markers" checked /><label title="Points you have clicked on the map" for="markers">Show Markers</label><br>
+                <!--<div id="markersSlider"></div>-->
+                </div>
+
+                <div class="layers-item">
+                    <input type="checkbox" id="shaded" name="shaded" /><a title="Land surface elevation depicted as shaded relief, from The National Map"
+                                                                              target="_blank" href="http://www.nationalmap.gov/">Shaded Relief <img src="assets/info.png" class="info"></a><br>
+                <!--<div id="shadedSlider"></div>-->
+                </div>
+
+                <div class="layers-item">
+                    <input type="checkbox" id="states" name="states" checked /><a title="Boundaries of US states from the National Atlas"
+                                                                              target="_blank" href="http://www.nationalatlas.gov/">US States <img src="assets/info.png" class="info"></a><br>
+                <!--<div id="statesSlider"></div>-->
+                </div>
+
+                <div class="layers-item">
+                    <input type="checkbox" id="counties" name="counties" checked /><a title="Boundaries of US counties from the National Atlas"
+                                                                                  target="_blank" href="http://www.nationalatlas.gov/">US Counties <img src="assets/info.png" class="info"></a><br>
+                <!--<div id="countiesSlider"></div>-->
+                </div>
+
+                <div class="layers-item">
+                    <input type="checkbox" id="geo" name="geo" checked /><a title="Bedrock and surficial geologic units and geologic structure for US states at 1:500,000 scale in a consistent data structure"
+                                                                        target="_blank" href="http://mrdata.usgs.gov/geology/state/">Geological Map <img src="assets/info.png" class="info"></a><br>
+                    <div id="geoSlider"></div>
+                </div>
+
+                <div class="layers-item">
+                    <input type="checkbox" id="uranium" name="uranium" /><a title="Surficial materials containing uranium, measured by emitted gamma radiation"
+                                                                        target="_blank" href="http://mrdata.usgs.gov/radiometric/">Uranium (Gamma ray) <img src="assets/info.png" class="info"></a><br>
+                    <div style="display: none;" id="uraniumSlider"></div>
+                </div>
+
+                <div class="layers-item">
+                    <input type="checkbox" id="thorium" name="thorium" /><a title="Surficial materials containing thorium, measured by emitted gamma radiation"
+                                                                        target="_blank" href="http://mrdata.usgs.gov/radiometric/">Thorium (Gamma ray) <img src="assets/info.png" class="info"></a><br>
+                    <div style="display: none;" id="thoriumSlider"></div>
+                </div>
+
+                <div class="layers-item">
+                    <input type="checkbox" id="potassium" name="potassium" /><a title="Surficial materials containing potassium, measured by emitted gamma radiation"
+                                                                            target="_blank" href="http://mrdata.usgs.gov/radiometric/">Potassium (Gamma ray) <img src="assets/info.png" class="info"></a><br>
+                    <div style="display: none;" id="potassiumSlider"></div>
+                </div>
+
+                <div class="layers-item">
+                    <input type="checkbox" id="bouguer" name="bouguer" /><a title="Gravity anomaly using the Bouguer correction"
+                                                                        target="_blank" href="http://mrdata.usgs.gov/gravity/bouguer/">Gravity: Bouguer anomaly <img src="assets/info.png" class="info"></a><br>
+                    <div style="display: none;" id="bouguerSlider"></div>
+                </div>
+
+                <div class="layers-item">
+                    <input type="checkbox" id="isostatic" name="isostatic" /><a title="Gravity anomaly using the isostatic correction"
+                                                                            target="_blank" href="http://mrdata.usgs.gov/gravity/isostatic/">Gravity: Isostatic anomaly <img src="assets/info.png" class="info"></a><br>
+                    <div style="display: none;" id="isostaticSlider"></div>
+                </div>
+
+                <div class="layers-item">
+                    <input type="checkbox" id="mag" name="mag" /><a title="The North American Aeromagnetic Anomaly Map"
+                                                                target="_blank" href="http://mrdata.usgs.gov/magnetic/">Magnetic Anomaly <img src="assets/info.png" class="info"></a><br>
+                    <div style="display: none;" id="magSlider"></div>
+                </div>
+
+                <div class="layers-item">
+                    <input type="checkbox" id="osm" name="osm" /><a title="Roads and cultural features for geographic reference from an open and publicly available source"
+                                                                target="_blank" href="https://www.openstreetmap.org/">OpenStreetMap <img src="assets/info.png" class="info"></a><br>
+                    <div style="display: none;" id="osmSlider"></div>
+                </div>
+
+                <div class="layers-item">
+                    <input type="checkbox" id="nureSed" name="nureSed" /><a title="Stream sediments and soils collected and analyzed as part of the National Uranium Resources Evaluation in the 1970s and early 1980s"
+                                                                        target="_blank" href="http://mrdata.usgs.gov/nure/sediment/">NURE Sediment Geochemistry <img src="assets/info.png" class="info"></a><br>
+                    <!--<div style="display: none;" id="nureSedSlider"></div>-->
+                </div>
+
+                <div class="layers-item">
+                    <input type="checkbox" id="nureWater" name="nureWater" /><a title="Water samples collected and analyzed as part of the National Uranium Resource Evaluation in the 1970s and early 1980s"
+                                                                            target="_blank" href="http://mrdata.usgs.gov/nure/water/">NURE Water Geochemistry <img src="assets/info.png" class="info"></a><br>
+                    <!--<div style="display: none;" id="nureWaterSlider"></div>-->
+                </div>
+
+                <div class="layers-item">
+                    <input type="checkbox" id="ngdbRock" name="ngdbRock" /><a title="Analyses of rocks from the National Geochemical Database, an archive of USGS geochemical investigations"
+                                                                          target="_blank" href="http://mrdata.usgs.gov/ngdb/rock/">NGDB Rock Geochemistry <img src="assets/info.png" class="info"></a><br>
+                    <!--<div style="display: none;" id="ngdbRockSlider"></div>-->
+                </div>
+
+                <div class="layers-item">
+                    <input type="checkbox" id="ngsSed" name="ngsSed" /><a title="Stream sediments analyzed using a consistent set of methods, sample spacing 1 per 289 km&sup2;"
+                                                                      target="_blank" href="http://mrdata.usgs.gov/geochem/">NGS Sediment Geochemistry <img src="assets/info.png" class="info"></a><br>
+                    <!--<div style="display: none;" id="ngsSedSlider"></div>-->
+                </div>
+
+                <div class="layers-item">
+                    <input type="checkbox" id="soil" name="soil" /><a title="Systematic geochemical and mineralogical survey of soil horizons analyzed using a consistent set of methods, sample spacing 1 per 1,600 km&sup2;"
+                                                                  target="_blank" href="http://mrdata.usgs.gov/ds-801/">US Soil Geochemistry <img src="assets/info.png" class="info"></a><br>
+                    <!--<div style="display: none;" id="soilSlider"></div>-->
+                </div>
+
+                <div class="layers-item">
+                    <input type="checkbox" id="mrds" name="mrds" /><a title="Reports of mineral deposits, mines, prospects, and occurrences worldwide"
+                                                                  target="_blank" href="http://mrdata.usgs.gov/mrds/">MRDS <img src="assets/info.png" class="info"></a><br>
+                    <!--<div style="display: none;" id="mrdsSlider"></div>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    document.getElementById('unit_info_right').addEventListener('touchstart', handleTouchStart, false);
+    document.getElementById('unit_info_right').addEventListener('touchend', handleTouchMove, false);
+
+    var xDown = null;
+    var yDown = null;
+
+    function handleTouchStart(evt) {
+        xDown = evt.touches[0].clientX;
+        yDown = evt.touches[0].clientY;
+    }
+
+    function handleTouchMove(evt) {
+        if ( ! xDown || ! yDown ) {
+            return;
+        }
+
+        var xUp = evt.changedTouches[evt.changedTouches.length - 1].clientX;
+        var yUp = evt.changedTouches[evt.changedTouches.length - 1].clientY;
+
+        var xDiff = xUp - xDown;
+        var yDiff = yDown - yUp;
+
+        if (xDiff > Math.abs(yDiff) && xDiff > 50) {
+            closeRightBar();
+        }
+
+        /* reset values */
+        xDown = null;
+        yDown = null;
+    }
+
+    function toggleClicked() {
+        $("#layerToggle").hide('slide',{direction:'right'},150, function () {
+            openRightBar()
+        });
+    }
+
+    $(".layers-close").click(function(d) {
+        closeRightBar();
+    });
+
+    function openRightBar() {
+        $("#unit_info_right").addClass("moveRight");
+    }
+
+    function closeRightBar() {
+        $("#unit_info_right").removeClass("moveRight");
+        $("#layerToggle").show('slide',{direction:'left'},150);
+    }
+
+    function centerMapRight(ll){
+        var contentWidth = $("#unit_info_right").width() / 2;
+        map.panToOffset( ll, [ -contentWidth, 0 ] );
+    }
+
+    function centerMapBottom(ll){
+        var contentWidth = $("#unit_info_bottom").height() / 2;
+        map.panToOffset( ll, [ 0, -contentWidth ] );
+    }
+
+    var overlays;
+    var opacities;
+    window.onload = function () {
+        //Create the map, centered in the contiguous US.
+        var map = L.map('map').setView([38.96, -95.25],4); //[-10603181.498059308, 4715943.534309269]
+        L.control.scale().addTo(map);
+
+
+        new L.Control.GeoSearch({
+            provider: new L.GeoSearch.Provider.Esri(),
+            position: 'topleft',
+            showMarker: true,
+            retainZoomLevel: true
+        }).addTo(map);
+
+
+        //This is used for showing/hiding markers that have been created from the user clicking the map.
+        var myMarkers = new L.FeatureGroup().addTo(map);
+
+        //Base (Shaded Relief) layer. Calling 'addTo(map)' makes this layer shown by default.
+        // Default USGS Basemap
+        var base = L.tileLayer('http://basemap.nationalmap.gov/ArcGIS/rest/services/USGSShadedReliefOnly/MapServer/tile/{z}/{y}/{x}', {
+           reuseTiles: true
+        }).addTo(map);
+
+        // Custom map layer to add color
+        // View examples here: http://leaflet-extras.github.io/leaflet-providers/preview/index.html
+        L.tileLayer.provider('Thunderforest.Transport').addTo(map);
+
+        //Create the other layers, adding some of them to show on the map initially
+        var osm = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '<a href="http://openstreetmap.org">OpenStreetMap</a> '
+        }).setOpacity(.5);
+
+        var states = L.tileLayer.wms('http://mrdata.usgs.gov/services/usstates-3857', {
+            layers: 'states',
+            format: 'image/png',
+            transparent: true,
+            title: "this is the title"
+        }).addTo(map);
+
+        var counties = L.tileLayer.wms('http://mrdata.usgs.gov/services/uscounties-3857', {
+            layers: 'counties',
+            format: 'image/png',
+            transparent: true
+        }).addTo(map);
+
+        var uranium = L.tileLayer.wms('http://mrdata.usgs.gov/services/aerorad', {
+            layers: 'Uranium',
+            format: 'image/png',
+            transparent: true
+        }).setOpacity(.25);
+
+        var thorium = L.tileLayer.wms('http://mrdata.usgs.gov/services/aerorad', {
+            layers: 'Thorium',
+            format: 'image/png',
+            transparent: true
+        }).setOpacity(.25);
+
+        var potassium = L.tileLayer.wms('http://mrdata.usgs.gov/services/aerorad', {
+            layers: 'Potassium',
+            format: 'image/png',
+            transparent: true
+        }).setOpacity(.25);
+
+        var bouguer = L.tileLayer.wms('http://mrdata.usgs.gov/services/gravity', {
+            layers: 'bouguer',
+            format: 'image/png',
+            transparent: true
+        }).setOpacity(.25);
+
+        var isostatic = L.tileLayer.wms('http://mrdata.usgs.gov/services/gravity', {
+            layers: 'isostatic',
+            format: 'image/png',
+            transparent: true
+        }).setOpacity(.25);
+
+        var nureSed = L.tileLayer.wms('http://mrdata.usgs.gov/services/nuresed', {
+            layers: 'nuresed',
+            format: 'image/png',
+            transparent: true
+        });
+
+        var nureWat = L.tileLayer.wms('http://mrdata.usgs.gov/services/nurewtr', {
+            layers: 'nurewtr',
+            format: 'image/png',
+            transparent: true
+        });
+
+        var ngdbRock = L.tileLayer.wms('http://mrdata.usgs.gov/services/ngdbrock', {
+            layers: 'ngdbrock',
+            format: 'image/png',
+            transparent: true
+        });
+
+        var ngsSed = L.tileLayer.wms('http://mrdata.usgs.gov/services/ngs', {
+            layers: 'natgeochem',
+            format: 'image/png',
+            transparent: true
+        });
+
+        var usSoil = L.tileLayer.wms('http://mrdata.usgs.gov/services/ds801', {
+            layers: 'ds801',
+            format: 'image/png',
+            transparent: true
+        });
+
+
+
+
+        var mrds = L.tileLayer.wms('http://mrdata.usgs.gov/services/mrds', {
+            layers: 'mrds',
+            format: 'image/png',
+            transparent: true
+        });
+
+        //WMTS Layers needed to be initialized a little differently
+        var geoMap = L.tileLayer('http://mrdata.usgs.gov/mapcache/wmts?SERVICE=WMTS&REQUEST=GetTile&layer=sgmc&Format=image/png&style=default&version=1.0.0&' +
+                'tileMatrixSet=GoogleMapsCompatible&TileMatrix={z}&TileRow={y}&TileCol={x}').setOpacity(.5).addTo(map);
+
+        var magAnomaly = L.tileLayer('http://mrdata.usgs.gov/mapcache/wmts?SERVICE=WMTS&REQUEST=GetTile&layer=magnetic&Format=image/png&style=default&version=1.0.0&' +
+                'tileMatrixSet=GoogleMapsCompatible&TileMatrix={z}&TileRow={y}&TileCol={x}').setOpacity(.4);
+
+
+        //This isn't used right now, was somewhat experimental. Basemaps are 'one or the other' whereas overlays can stack.
+        var baseMaps = {
+            "Shaded Relief": base,
+            "Street Map": osm
+        };
+
+        //Create the overlays map for use in the layer switcher/layer control.
+        overlays = {
+            "markers": myMarkers,
+            "shaded": base,
+            "uranium": uranium,
+            "thorium": thorium,
+            "potassium": potassium,
+            "bouguer": bouguer,
+            "isostatic": isostatic,
+            "geo":geoMap,
+            "mag": magAnomaly,
+            "osm": osm,
+            "states":states,
+            "counties":counties,
+            "nureSed": nureSed,
+            "nureWater": nureWat,
+            "ngdbRock": ngdbRock,
+            "ngsSed": ngsSed,
+            "soil": usSoil,
+            "mrds": mrds
+        };
+
+        opacities = {
+            "markers": 1.0,
+            "shaded": 1.0,
+            "uranium": 0.25,
+            "thorium": 0.25,
+            "potassium": 0.25,
+            "bouguer": 0.25,
+            "isostatic": 0.25,
+            "geo":0.5,
+            "mag": 0.4,
+            "osm": 0.5,
+            "states": 1.0,
+            "counties": 1.0,
+            "nureSed": 1.0,
+            "nureWater": 1.0,
+            "ngdbRock": 1.0,
+            "ngsSed": 1.0,
+            "soil": 1.0,
+            "mrds": 1.0
+        };
+
+        $.each(overlays, function(k, v) {
+            $('#' + k + 'Slider').slider({
+                min: 0,
+                max: 1,
+                step: 0.02,
+                value: opacities[k],
+                //This is for the sliding event to change the opacity gradually
+                slide: function() {
+                    v.setOpacity($(this).slider('value'));
+                },
+
+                //This is needed for if someone clicks somewhere on the slide bar, rather than actually sliding the cursor
+                change: function() {
+                    v.setOpacity($(this).slider('value'));
+                }
+            });
+
+            var layerSlider = document.getElementById(k + 'Slider');
+            if (layerSlider) {
+                layerSlider.addEventListener('touchstart', function(event) {
+                    event.stopPropagation();
+                });
+            }
+
+
+            var Hydda_Full = L.tileLayer('http://{s}.tile.openstreetmap.se/hydda/full/{z}/{x}/{y}.png', {
+            	attribution: 'Tiles courtesy of <a href="http://openstreetmap.se/" target="_blank">OpenStreetMap Sweden</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            });
+
+        });
+
+        //Create the layer control/switcher
+//    L.control.layers(null/*baseMaps*/, overlays).addTo(map);
+
+        //Request the user's current location.
+        map.locate({setView: true, maxZoom: 4});
+
+        //The function to call if there is an error obtaining the user's position or if the user denies permission.
+        map.on('locationerror', onLocationError);
+
+        //The function to call if the user's position is successfully found.
+        map.on('locationfound', onLocationFound);
+
+        //Click handler for the map
+        map.on('click', onMapClick);
+
+        // New Marker/icon
+        var newIcon = L.icon({
+            iconUrl: 'assets/pin.png',
+            shadowUrl: 'assets/pin-shadow.png',
+
+            iconSize:     [40, 33], // size of the icon
+            shadowSize:   [40, 33], // size of the shadow
+            iconAnchor:   [20, 33], // point of the icon which will correspond to marker's location
+            shadowAnchor: [20,33],  // the same for the shadow
+            popupAnchor:  [0, -33] // point from which the popup should open relative to the iconAnchor
+        });
+
+        //If the location is found, add a marker to the map at the correct position.
+        function onLocationFound(e) {
+            //var radius = e.accuracy / 2;
+            var radius = 10;
+
+            var mk = L.marker(e.latlng, {icon: newIcon}).addTo(map)
+                    .bindPopup("<b>You are here.<b><br>" +
+                    '<a href="app/#/data/' + e.longitude + '/' + e.latitude + '" target="_blank" style="text-decoration: none;">' +
+                    '<span style="white-space: nowrap;">Nearby Scientific Data</span></a>').openPopup();
+            myMarkers.addLayer(mk);
+            L.circle(e.latlng, radius).addTo(map);
+        }
+
+        //If there was an error finding the user's position, or if the user denies permission, alert the user.
+        function onLocationError(e) {
+            alert(e.message);	// We need to make this a friendlier message
+        }
+
+        //When the map is clicked check to see if the "Show Markers" layer is turned on. If it is, add another marker to
+        //the map. If not, do nothing.
+        function onMapClick(e) {
+            closeRightBar();
+            if (!map.hasLayer(myMarkers)) return;
+            myMarkers.clearLayers();
+            var mk = L.marker(e.latlng,  {icon: newIcon}).addTo(map)
+                    .bindPopup('<a href="app/#/data/' + e.latlng.lng + '/' + e.latlng.lat + '" target="_blank" style="text-decoration: none;">' +
+                    '<span style="white-space: nowrap;">Scientific data near</span> (' +
+                    e.latlng.lng.toFixed(4) + ", " + e.latlng.lat.toFixed(4) + ')</a>').openPopup();
+
+            myMarkers.addLayer(mk);
+        }
+
+        //The initial cursor for the leaflet map is the 'grab' or something like that. Since we have a click handler, change
+        //the initial value to be the default cursor, so the users know the map is clickable.
+        $('.leaflet-container').css('cursor','default');
+
+        $('input[type=checkbox]').on('change', function () {
+            var slider = $("#" + $(this).attr('id') + "Slider");
+            if (this.checked) {
+                slider.show();
+                map.addLayer(overlays[$(this).attr('id')]);
+            } else {
+                slider.hide();
+                map.removeLayer(overlays[$(this).attr('id')]);
+            }
+        });
+    };
+
+</script>
+
+</body>
+</html>

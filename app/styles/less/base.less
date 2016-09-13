@@ -1,0 +1,336 @@
+//out: ../css/base.css, sourcemap: false, compress: true
+
+@import 'variables.less';
+
+@white: #FFF;
+@blue: #3175B0;
+@text: #252C34;
+
+*{
+    text-decoration: none;;
+    outline: none;
+    &:hover{
+        outline: none;
+    }
+    &:focus{
+        outline: none;
+    }
+    &:active{
+        outline: none;
+    }
+}
+
+a{
+    color: @blue;
+}
+
+
+body,
+html{
+    height: 100%;
+    width: 100%;
+    display: block;
+    text-rendering: optimizelegibility;
+    -webkit-font-smoothing: antialiased;
+    margin: 0;
+    padding: 0;
+}
+
+
+#usgscolorband{
+    background: none;
+    background-color: #000;
+    height: auto;
+    box-sizing: border-box;
+    padding: 15px;
+
+}
+#usgsbanner{
+    background: none;
+}
+
+
+div.loading{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 22pt;
+    font-weight: bolder;
+    position: fixed;
+    left: 0;
+    z-index: 5000;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    bottom: 0;
+    background-color: fade(@text, 90%);
+    color: @white;
+}
+
+// Data page
+.main-header{
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 15px;
+    background-color: @blue;
+    color: #FFF;
+    margin-bottom: 35px;
+
+    a{
+        display: inline-block;
+        box-sizing: border-box;
+        padding: 8px;
+        color: #3175B0;
+        background-color: @white;
+        font-weight: bolder;
+        vertical-align: middle;
+        border-radius: 3px;
+        &:hover{
+            cursor: pointer;
+            background-color: fade(@white, 70%);
+        }
+    }
+    h1{
+        display: inline-block;
+        margin-left: 25px;
+        font-size: 14pt;
+        font-weight: 500;
+        color: @white;
+        vertical-align: middle;
+
+        b{
+            font-weight: bolder;
+        }
+    }
+}
+
+
+div.section{
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    // padding: 15px 5% 15px 5%;
+    padding: 0 5% 0 5%;
+    color: @text;
+
+    &.geographic-context{
+        padding: 0 5% 55px 5%;
+        .section-header{
+            &:hover{
+                cursor: default;
+                background-color: @text;
+                border-bottom: 1px solid darken(@text, 5%);
+            }
+        }
+    }
+
+    .section-header{
+        display: block;
+        font-size: 14pt;
+        font-weight: bolder;
+        background-color: @text;
+        color: @white;
+        box-sizing: border-box;
+        padding: 14px 18px;
+        text-transform: capitalize;
+        transition: @transition;
+        border-bottom: 1px solid darken(@text, 5%);
+        // border-radius: 3px;
+
+        &:hover{
+            cursor: pointer;
+            background-color: darken(@text, 5%);
+            border-bottom: 1px solid darken(@text, 10%);
+            transition: @transition;
+        }
+
+        img{
+            height: 22px;
+            vertical-align: middle;
+            width: auto;
+            margin-left: 12px;
+            position: relative;
+            top: -1px;
+        }
+
+        a{
+            color: fade(@white, 50%);
+            transition: 0.15s;
+            box-sizing: border-box;
+            float: right;
+            font-size: 10pt;
+            border-bottom: 1px dotted fade(@white, 50%);
+            vertical-align: middle;
+            padding-top: 3px;
+            &:hover{
+                cursor: pointer;
+                color: @white;
+                border-bottom: 1px dotted fade(@white, 99%);
+                transition: 0.15s;
+            }
+        }
+    }
+
+    span.section-info{
+        display: block;
+        font-size: 10pt;
+        font-weight: bolder;
+        box-sizing: border-box;
+        padding: 22px 0;
+        line-height: 1.6em;
+    }
+
+    div.half{
+        display: inline-flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 48%;
+        box-sizing: border-box;
+        padding: 12px;
+        background-color: #FAFAFA;
+        border: 1px solid darken(#FAFAFA, 5%);
+        vertical-align: top;
+        margin: 0 1%;
+        height: 200px;
+
+        @media only screen and (max-width : 920px) { width: 98%; margin: 10px 1%; }
+
+        h6{
+            display: block;
+            text-align: center;
+            font-weight: bolder;
+            font-size: 13pt;
+            margin-bottom: 15px;
+        }
+
+        ul{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            li{
+                border-bottom: 1px solid rgba(0,0,0,0.12);
+                box-sizing: border-box;
+                padding: 5px;
+                color: fade(@text, 50%);
+                font-style: italic;
+                font-weight: 500;
+                b{
+                    float: right;
+                    font-weight: bolder;
+                    color: @text;
+                }
+            }
+        }
+    }
+
+    &.geographic-context{
+        display: block;
+
+        span.geographic-info-basic{
+            text-transform: uppercase;
+            display: block;
+            font-size: 14pt;
+            width: 100%;
+            text-align: center;
+            box-sizing: border-box;
+            padding: 25px 10px;
+            font-weight: bolder;
+        }
+    }
+
+    &.geological{
+        display: block;
+    }
+
+
+
+
+}
+
+table a:link {
+	color: #666;
+	font-weight: bold;
+	text-decoration:none;
+}
+table a:visited {
+	color: #999999;
+	font-weight:bold;
+	text-decoration:none;
+}
+table a:active,
+table a:hover {
+	color: #bd5a35;
+	text-decoration:underline;
+}
+table {
+	font-family:Arial, Helvetica, sans-serif;
+	color:#666;
+	font-size:12px;
+	background:##FAFAFA;
+	border:#ccc 1px solid;
+    margin-bottom: 35px;
+
+    width: 100%;
+}
+table th {
+	padding:14px 15px 13px 15px;
+	border-bottom:1px solid #e0e0e0;
+	border-top:1px solid #e0e0e0;
+	background: darken(#FAFAFA, 5%);
+    color: @text;
+    font-size: 12pt;
+    font-weight: bolder;
+}
+table th:first-child {
+	text-align: left;
+	padding-left:20px;
+}
+table tr:first-child th:first-child {
+	-moz-border-radius-topleft:3px;
+	-webkit-border-top-left-radius:3px;
+	border-top-left-radius:3px;
+}
+table tr:first-child th:last-child {
+	-moz-border-radius-topright:3px;
+	-webkit-border-top-right-radius:3px;
+	border-top-right-radius:3px;
+}
+table tr {
+	text-align: left;
+	padding-left:20px;
+}
+table td:first-child {
+	text-align: left;
+	padding-left:20px;
+	border-left: 0;
+}
+table td {
+	padding:18px;
+	border-top: 1px solid #ffffff;
+	border-bottom:1px solid #e0e0e0;
+	border-left: 1px solid #e0e0e0;
+
+	background: #fafafa;
+    line-height: 1.4em;
+}
+table td a{
+    color: @blue !important;
+}
+table tr.even td {
+	background: #f6f6f6;
+}
+table tr:last-child td {
+	border-bottom:0;
+}
+table tr:last-child td:first-child {
+	-moz-border-radius-bottomleft:3px;
+	-webkit-border-bottom-left-radius:3px;
+	border-bottom-left-radius:3px;
+}
+table tr:last-child td:last-child {
+	-moz-border-radius-bottomright:3px;
+	-webkit-border-bottom-right-radius:3px;
+	border-bottom-right-radius:3px;
+}

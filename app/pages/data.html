@@ -1,0 +1,70 @@
+<div class="loading" ng-if="loading">
+    Loading...
+</div>
+
+<div class="main-header">
+    <a href="#">Back to Map</a>
+    <h1>Scientific Data Near <b>{{data.location.longitude}}, {{data.location.latitude}}</b></h1>
+</div>
+
+<div class="section geographic-context">
+    <h1 class="section-header">Geographic Context</h1>
+
+    <span class="geographic-info-basic">
+        {{data.location.context.fips[0].name}} {{data.location.context.fips[0].type}},
+        {{data.location.context.fips[1].name}},
+        {{data.location.context.fips[2].name}},
+        {{data.location.context.fips[3].name}}
+    </span>
+
+    <div class="half">
+        <h6>USGS Hydrologic Units</h6>
+        <ul>
+            <li ng-repeat="item in data.location.context.huc">{{item.type}}<b>{{item.name}}</b></li>
+        </ul>
+    </div><!--
+    --><div class="half">
+        <h6>USGS or Canadian NTS Map Quadrangles</h6>
+        <ul>
+            <li ng-repeat="item in data.location.context.quad">{{item.type}}<b>{{item.name}}</b></li>
+        </ul>
+    </div>
+
+</div>
+
+
+
+
+<!-- Each Item -->
+<div class="section" ng-repeat="item in data.dataset">
+    <h1 class="section-header" ng-click="showSection = !showSection">
+        {{item.title}}
+        <!-- <img src="visuals/down.png"> -->
+        <a href="{{item.url}}" target="_blank">More Info</a>
+    </h1>
+    <span class="section-info" ng-show="showSection">
+        {{item.description}}
+    </span>
+
+    <table class="table table-hover table-mc-light-blue" ng-show="showSection">
+        <thead>
+            <tr>
+                <th>{{item.heading[0]}}</th>
+                <th>{{item.heading[1]}}</th>
+                <th>{{item.heading[2]}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="data in item.record_list">
+                <td ng-repeat="(key, val) in data track by $index" ng-hide="key == 'url'">
+                    <a ng-if="key == 'label'" href="{{data.url}}" target="_blank">{{val}}</a>
+                    <span ng-if="key != 'label'">{{val}}</span>
+                </td>
+            </tr>
+        </tbody>
+
+    </table>
+</div>
+
+
+<br><br><br><br>
