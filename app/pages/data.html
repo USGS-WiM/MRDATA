@@ -4,8 +4,12 @@
 
 <div class="main-header">
     <a href="#">Back to Map</a>
-    <h1>Scientific Data Near <b>{{data.location.longitude}}, {{data.location.latitude}}</b></h1>
+    <h1>
+        Scientific Data Near <b>{{data.location.longitude | limitTo : 10}}, {{data.location.latitude | limitTo : 10}}</b>
+        <small>Search area extends approximately <b>{{eastwest}}</b> km east-west and <b>{{northsouth}}</b> km north-south. <a ng-click="narrower()">Smaller Area</a> <a ng-click="wider()">Larger Area</a></small>
+    </h1>
 </div>
+
 
 <div class="section geographic-context">
     <h1 class="section-header">Geographic Context</h1>

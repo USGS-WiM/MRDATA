@@ -102,9 +102,38 @@ div.loading{
         b{
             font-weight: bolder;
         }
+
+        small{
+            display: block;
+            font-size: 10pt;
+            color: fade(@white, 60%);
+            padding-top: 3px;
+            b{
+                color: @white;
+            }
+            a{
+                border-bottom: 1px dotted @white;
+                box-sizing: border-box;
+                margin: 0 0 0 8px;
+                color: @white;
+                padding: 0 0 2px 0;
+                background-color: transparent;
+                &:hover{
+                    color: @white;
+                    background-color: transparent;
+                }
+            }
+        }
     }
 }
 
+
+#map{
+    display: block;
+    width: 100%;
+    height: 200px;
+    background-color: red;
+}
 
 div.section{
     display: block;
@@ -124,6 +153,7 @@ div.section{
             }
         }
     }
+
 
     .section-header{
         display: block;
