@@ -3,12 +3,28 @@
 </div>
 
 <div class="main-header">
-    <a href="#">Back to Map</a>
+    <a href="../">Back to Map</a>
     <h1>
-        Scientific Data Near <b>{{data.location.longitude | limitTo : 10}}, {{data.location.latitude | limitTo : 10}}</b>
-        <small>Search area extends approximately <b>{{eastwest}}</b> km east-west and <b>{{northsouth}}</b> km north-south. <a ng-click="narrower()">Smaller Area</a> <a ng-click="wider()">Larger Area</a></small>
+        Scientific Data Near <b>{{data.location.latitude | limitTo : 10}}, {{data.location.longitude | limitTo : 10}}</b>
+        <!-- <small>Search area extends approximately <b>{{eastwest}}</b> km east-west and <b>{{northsouth}}</b> km north-south. <a ng-click="narrower()">Smaller Area</a> <a ng-click="wider()">Larger Area</a></small> -->
     </h1>
 </div>
+
+<div class="section map-content">
+    <leaflet lf-center="center" markers="markers" id="map" geojson="geojson"></leaflet><!--
+    --><div class="map-controls">
+        <p>
+            Search Area extends<br>
+            <b>{{eastwest}}km</b> East-West and <b>{{northsouth}}km</b> North-South
+        </p>
+        <div class="button-group">
+            <button ng-click="tolerance = tolerance/2; eastwest = eastwest/2; northsouth = northsouth/2; toleranceChanged = true; zoomLevel = zoomLevel + 1; updateMap();" ng-disabled="tolerance < 0.015">-</button>
+            <button ng-click="tolerance = tolerance*2; eastwest = eastwest*2; northsouth = northsouth*2; toleranceChanged = true; zoomLevel = zoomLevel - 1; updateMap();" ng-disabled="tolerance > 0.7">+</button>
+            <button class="update" ng-click="updateTolerance();" ng-disabled="!toleranceChanged">Update</button>
+        </div>
+    </div>
+</div>
+
 
 
 <div class="section geographic-context">

@@ -448,7 +448,7 @@
 
             var mk = L.marker(e.latlng, {icon: newIcon}).addTo(map)
                     .bindPopup("<b>You are here.<b><br>" +
-                    '<a href="app/#/data/' + e.longitude + '/' + e.latitude + '" target="_blank" style="text-decoration: none;">' +
+                    '<a href="app/#/data/' + e.latitude + '/' + e.longitude + '" style="text-decoration: none;">' +
                     '<span style="white-space: nowrap;">Nearby Scientific Data</span></a>').openPopup();
             myMarkers.addLayer(mk);
             L.circle(e.latlng, radius).addTo(map);
@@ -466,7 +466,7 @@
             if (!map.hasLayer(myMarkers)) return;
             myMarkers.clearLayers();
             var mk = L.marker(e.latlng,  {icon: newIcon}).addTo(map)
-                    .bindPopup('<a href="app/#/data/' + e.latlng.lng + '/' + e.latlng.lat + '" target="_blank" style="text-decoration: none;">' +
+                    .bindPopup('<a href="app/#/data/' + e.latlng.lat + '/' + e.latlng.lng + '" style="text-decoration: none;">' +
                     '<span style="white-space: nowrap;">Scientific data near</span> (' +
                     e.latlng.lng.toFixed(4) + ", " + e.latlng.lat.toFixed(4) + ')</a>').openPopup();
 
