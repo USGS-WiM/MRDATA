@@ -4,11 +4,17 @@
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="shortcut icon" id="favicon" type="image/ico" href="../assets/favicon.png" />
+    <title>USGS Mineral Resources On-Line Spatial Data</title>
+
     <link rel="stylesheet" type="text/css" href="assets/styles.min.css" />
     <script src="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
+    <link rel="stylesheet" type="text/css" href="assets/geosearch/search_api.css" />
     <link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" />
-    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.3/themes/base/jquery-ui.css" type="text/css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet">
+    <script src="assets/geosearch/search_api.js"></script>
     <script src="assets/jquery/jquery.min.js"></script>
     <script src="assets/jquery/jquery-ui.min.js"></script>
     <script src="assets/jquery/jquery.ui.touch-punch.min.js"></script>
@@ -19,7 +25,16 @@
 
 </head>
 <body>
+
+<!-- Map Wrapper -->
 <div id="map"></div>
+<div id="usgsSearch" class="usgs-search"></div>
+
+<!-- USGS LOADER - shown until base map loads -->
+<div class="usgs-loader">
+  <img src="assets/usgs_logo_animated.svg" />
+  Loading...
+</div>
 
 <div class="not-map">
     <div class="leaflet-top leaflet-right">
@@ -156,6 +171,12 @@
     var xDown = null;
     var yDown = null;
 
+
+
+
+
+
+
     function handleTouchStart(evt) {
         xDown = evt.touches[0].clientX;
         yDown = evt.touches[0].clientY;
@@ -182,7 +203,7 @@
     }
 
     function toggleClicked() {
-        $("#layerToggle").hide('slide',{direction:'right'},150, function () {
+        $("#layerToggle").hide('slide',{direction:'up'},150, function () {
             openRightBar()
         });
     }
@@ -197,7 +218,7 @@
 
     function closeRightBar() {
         $("#unit_info_right").removeClass("moveRight");
-        $("#layerToggle").show('slide',{direction:'left'},150);
+        $("#layerToggle").show('slide',{direction:'up'},150);
     }
 
     function centerMapRight(ll){
@@ -213,6 +234,9 @@
     var overlays;
     var opacities;
     window.onload = function () {
+
+
+
         //Create the map, centered in the contiguous US.
         var map = L.map('map').setView([38.96, -95.25],4); //[-10603181.498059308, 4715943.534309269]
         L.control.scale().addTo(map);
@@ -235,9 +259,20 @@
            reuseTiles: true
         }).addTo(map);
 
+        // Show loading spinner briefly
+        function hideLoader(){
+            $('.usgs-loader').slideUp(300);
+        }
+        setTimeout(hideLoader, 2100);
+
         // Custom map layer to add color
         // View examples here: http://leaflet-extras.github.io/leaflet-providers/preview/index.html
-        L.tileLayer.provider('Thunderforest.Transport').addTo(map);
+        var OpenStreetMap_Mapnik = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        	maxZoom: 19,
+        	attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        });
+        OpenStreetMap_Mapnik.addTo(map);
+        // L.tileLayer.provider('Thunderforest.Transport').addTo(map);
 
         //Create the other layers, adding some of them to show on the map initially
         var osm = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -487,7 +522,38 @@
                 map.removeLayer(overlays[$(this).attr('id')]);
             }
         });
-    };
+
+
+
+
+
+
+        // Search API (DOCS: https://txpub.usgs.gov/dss/search_api/2.0/doc/#documentation?doc_loading)
+          search_api.create( "usgsSearch", {
+              on_result: function(o) {
+                  // what to do when a location is found
+                  // o.result is geojson point feature of location with properties
+                  map
+                      .fitBounds([ // zoom to location
+                          [ o.result.properties.LatMin, o.result.properties.LonMin ],
+                          [ o.result.properties.LatMax, o.result.properties.LonMax ]
+                      ])
+                      .openPopup(  // open popup at location listing all properties
+                          // $.map( Object.keys(o.result.properties), function(property) {
+                          //     return "<b>" + property + ": </b>" + o.result.properties[property];
+                          // }).join("<br/>"),
+                          '<a href="app/#/data/' + o.result.properties.LatMax + '/' + o.result.properties.LonMax + '" style="text-decoration: none;">' +
+                          '<span style="white-space: nowrap;">Scientific data near</span> (' +
+                          o.result.properties.LonMax.toFixed(4) + ", " + o.result.properties.LatMax.toFixed(4) + ')</a>',
+                          [ o.result.properties.Lat, o.result.properties.Lon ]
+                      )
+                      .setZoom(12);
+              }
+          }); // End Search API
+
+
+
+    }; // End Onload
 
 </script>
 

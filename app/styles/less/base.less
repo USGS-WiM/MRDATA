@@ -152,16 +152,18 @@ div.loading{
         margin-bottom: 10px;
         button{
             display: inline-block;
-            width: 40px;
+            width: auto;
             height: 40px;
             border-radius: 3px;
             margin: 4px;
             border: none;
             background-color: @blue;
             color: @white;
-            font-size: 12pt;
+            font-size: 10pt;
             transition: 0.15s;
-            font-weight: bolder;
+            font-weight: 400;
+            box-sizing: border-box;
+            padding: 0 10px;
             &:hover{
                 background-color: darken(@blue, 5%);
                 transition: 0.15s;
@@ -243,10 +245,10 @@ div.section{
         }
 
         img{
-            height: 22px;
+            height: 16px;
             vertical-align: middle;
             width: auto;
-            margin-left: 12px;
+            margin-right: 8px;
             position: relative;
             top: -1px;
         }

@@ -18,8 +18,8 @@
             <b>{{eastwest}}km</b> East-West and <b>{{northsouth}}km</b> North-South
         </p>
         <div class="button-group">
-            <button ng-click="tolerance = tolerance/2; eastwest = eastwest/2; northsouth = northsouth/2; toleranceChanged = true; zoomLevel = zoomLevel + 1; updateMap();" ng-disabled="tolerance < 0.015">-</button>
-            <button ng-click="tolerance = tolerance*2; eastwest = eastwest*2; northsouth = northsouth*2; toleranceChanged = true; zoomLevel = zoomLevel - 1; updateMap();" ng-disabled="tolerance > 0.7">+</button>
+            <button ng-click="tolerance = tolerance/2; eastwest = eastwest/2; northsouth = northsouth/2; toleranceChanged = true; zoomLevel = zoomLevel + 1; updateMap();" ng-disabled="tolerance < 0.015">Decrease</button>
+            <button ng-click="tolerance = tolerance*2; eastwest = eastwest*2; northsouth = northsouth*2; toleranceChanged = true; zoomLevel = zoomLevel - 1; updateMap();" ng-disabled="tolerance > 0.7">Increase</button>
             <button class="update" ng-click="updateTolerance();" ng-disabled="!toleranceChanged">Update</button>
         </div>
     </div>
@@ -58,8 +58,9 @@
 <!-- Each Item -->
 <div class="section" ng-repeat="item in data.dataset">
     <h1 class="section-header" ng-click="showSection = !showSection">
+        <img src="../assets/expand.png" ng-if="!showSection">
+        <img src="../assets/contract.png" ng-if="showSection">
         {{item.title}}
-        <!-- <img src="visuals/down.png"> -->
         <a href="{{item.url}}" target="_blank">More Info</a>
     </h1>
     <span class="section-info" ng-show="showSection">
