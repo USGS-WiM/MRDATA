@@ -18,7 +18,7 @@
 
     "homepageURL": "https://wim.usgs.gov/mrdata/",
     "downloadURL": "https://github.com/USGS-WiM/MRDATA/archive/master.zip",
-    "disclaimerURL": "https://github.com/USGS-WiM/MRDATA/blob/master/LICENSE.md",
+    "disclaimerURL": "https://github.com/USGS-WiM/MRDATA/blob/master/DISCLAIMER.md",
     "repositoryUrl": "https://github.com/USGS-WiM/MRDATA",
     "vcs": "git",
 
